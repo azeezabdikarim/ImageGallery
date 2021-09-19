@@ -3,11 +3,13 @@ let cam;
 let walk_pace = 0;
 let img;
 let front_wall_pictures = [];
+let left_wall_pictures = [];
+let right_wall_pictures = [];
 let pointLight_pos = 100;
 let z_camera_pos = 0;
-let z_camera_max = 2000;
-let z_camera_min = -400;
 
+let z_camera_max = 1350;
+let z_camera_min = -350;
 
 let wall_angle = 80;
 let wall_length = 1000;
@@ -18,23 +20,39 @@ let front_wall_width = 500;
 let front_wall_height = 400;
 let front_wall_pic_pos_x = (front_wall_width) + (hallway_width/2) - 80;
 
-
-function setup() {
-	createCanvas(1500, 900, WEBGL);
-	let offsetY = -50;
-
-	let front_wall_paths = ['Pics/sunset.jpg', 'Pics/sauce.png'];
+function preload(){
+	let front_wall_paths = ['Pics/duo.jpg', 'Pics/learning.jpg'];
+	let left_wall_paths = ['Pics/warmtrash.jpg', 'Pics/greenswarm.jpg', 'Pics/sf.jpg'];//, 'Pics/sf.jpg','Pics/greenswarm.jpg'];
+	let right_wall_paths = ['Pics/sfsunset.jpg', 'Pics/green.jpg','Pics/canals.jpg'];//, 'Pics/green.jpg', 'Pics/canals.jpg'];
 	for (var i = 0; i < front_wall_paths.length; i++) {
 		var temp_img = loadImage(front_wall_paths[i]);
 		temp_img.resize(0, front_wall_height/2);
 		front_wall_pictures.push(temp_img);
 	}
-	img = loadImage('Pics/sunset.jpg');
-	console.log(img.width);
-	img.resize(0,front_wall_height/2);
-	console.log(img.width);
+	for (var i = 0; i < left_wall_paths.length; i++) {
+		var temp_img = loadImage(left_wall_paths[i]);
+		temp_img.resize(0, front_wall_height/2);
+		left_wall_pictures.push(temp_img);
+	}
+	for (var i = 0; i < right_wall_paths.length; i++) {
+		var temp_img = loadImage(right_wall_paths[i]);
+		temp_img.resize(0, front_wall_height/2);
+		right_wall_pictures.push(temp_img);
+	}
+	console.log(front_wall_pictures);
+	console.log(left_wall_pictures);
+	console.log(right_wall_pictures);
+}
+
+function setup() {
+	createCanvas(1700, 900, WEBGL);
+	let offsetY = -50;
+
+	
+
+
 	cam = createCamera();
-	cam.move(0,0,100);
+	cam.move(0,-100,-300);
 }
 
 function draw() {
@@ -45,21 +63,26 @@ function draw() {
 	
   	orbitControl();
 
-	drawAxis();
+	// drawAxis();
 
 	let x_translate = 0;
 
 	noStroke();
-	fill(91,152,94);
+	// fill(91,152,94);
+	pointLight(150,150,150,0,-100,-900);
+	pointLight(200, 200,200,-80,-60,pointLight_pos);
+	// pointLight(200, 200,200,-100,pointLight_pos);
+	pointLight(200, 200,200,80,-60,pointLight_pos);
+	ambientMaterial(91,152,94);
 	rotateX(90);
 	translate(0,0,-500);
 	box(10000,10000,1000);
 	translate(0,0,500);
 	rotateX(-90);
 
+	
 	ambientMaterial(160,160,160);
-	pointLight(160,160,160, 80,0,pointLight_pos);
-	pointLight(160,160,160,-80,0,pointLight_pos);
+	
 
 
 	rotateY(wall_angle);
@@ -67,7 +90,7 @@ function draw() {
 	rect(-wall_length/2,-wall_height/2, wall_length,wall_height);
 	translate(0,0,1);
 
-	hangPhotos(front_wall_pictures, wall_length, wall_height);
+	hangPhotos(left_wall_pictures, wall_length, wall_height, .75);
 
 	translate(0,0,-1);
 	translate(wall_length/2,wall_height/2,hallway_width/2);
@@ -77,7 +100,7 @@ function draw() {
 	translate(wall_length/2,-wall_height/2,-hallway_width/2);
 	rect(-wall_length/2,-wall_height/2, wall_length,wall_height);
 	translate(0,0,1);
-	hangPhotos(front_wall_pictures, wall_length, wall_height);
+	hangPhotos(right_wall_pictures, wall_length, wall_height, .75);
 	translate(0,0,-1);
 	translate(wall_length/2,wall_height/2,hallway_width/2);
 
@@ -108,7 +131,8 @@ function draw() {
 
 
   	walk();
-  	mobileMove();
+
+  	//mobileMove();
 	frames_passed++;
 }
 
@@ -125,16 +149,15 @@ function draw() {
 
 function hangPhotos(photo_list, wall_length, wall_height, scale = 0.5) {
 	let intervals = wall_length/(photo_list.length + 2);
-	console.log(photo_list);
-	let wall_x = 0;
+	let wall_x = -(intervals/2);
 	for (var i = 0; i < photo_list.length; i++) {
 		let wall_img = photo_list[i];
 		var height_scale = (wall_height*scale)/wall_img.height;
 		var scaled_width = height_scale*wall_img.width
 		
 		image(wall_img, wall_x - (scaled_width), 0, scaled_width, wall_height*scale);
-		wall_x = wall_x + intervals;
-		console.log(wall_x);
+
+		wall_x = wall_x + intervals + (scaled_width/2);
 	}
 
 }
@@ -142,9 +165,9 @@ function hangPhotos(photo_list, wall_length, wall_height, scale = 0.5) {
 
 function keyTyped() {
   if (key === 'f') {
-   	walk_pace = 7;
+   	walk_pace = -1;
   } else if (key === 'b') {
-   	walk_pace = -7;
+   	walk_pace = 1;
   } else if (key === 's') {
    	walk_pace = 0;
   }
@@ -193,4 +216,4 @@ function drawAxis(){
 	line(0,-2000,0,0,2000,0);
 	stroke(0, 0,250);
 	line(0,0,-2000, 0, 0, 2000);
-}
+}	
