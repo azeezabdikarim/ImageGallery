@@ -5,7 +5,7 @@ let img;
 let front_wall_pictures = [];
 let pointLight_pos = 100;
 let z_camera_pos = 0;
-let z_camera_max = 2500;
+let z_camera_max = 2000;
 let z_camera_min = -400;
 
 
@@ -108,6 +108,7 @@ function draw() {
 
 
   	walk();
+  	mobileMove();
 	frames_passed++;
 }
 
@@ -152,11 +153,30 @@ function keyTyped() {
 }
 
 function walk(){
-	// if ((z_camera_pos <= z_camera_max) && (z_camera_pos >= z_camera_min)) {
+	if ((z_camera_pos <= z_camera_max) && (z_camera_pos >= z_camera_min)) {
 		cam.move(0,0,walk_pace);
 		z_camera_pos += walk_pace;
 		pointLight_pos += walk_pace;
-	// } 
+	} else if ((z_camera_pos >= z_camera_max)){
+		walk_pace = 0;
+		z_camera_pos = z_camera_max;
+	} else if ((z_camera_pos <= z_camera_min)){
+		walk_pace = 0;
+		z_camera_pos = z_camera_min;
+	}
+}
+
+function mobileMove(){
+	let acc_x, acc_y, acc_z;
+
+	acc_x+=accelerationX*0.05;
+	acc_y+=accelerationY*0.05;
+	acc_z+=accelerationZ*0.05;
+
+	walk_pace = walk_pace*accelerationZ;
+	// rotateX(x);
+	rotateY(acc_y);
+	// rotateZ(z);
 }
 
 function keyPressed() {
