@@ -21,6 +21,13 @@ let front_wall_height = 400;
 let front_wall_pic_pos_x = (front_wall_width) + (hallway_width/2) - 80;
 
 function preload(){
+	
+}
+
+function setup() {
+	createCanvas(1700, 900, WEBGL);
+	let offsetY = -50;
+	
 	let front_wall_paths = ['Pics/duo.jpg', 'Pics/learning.jpg'];
 	let left_wall_paths = ['Pics/warmtrash.jpg', 'Pics/greenswarm.jpg', 'Pics/sf.jpg'];//, 'Pics/sf.jpg','Pics/greenswarm.jpg'];
 	let right_wall_paths = ['Pics/sfsunset.jpg', 'Pics/green.jpg','Pics/canals.jpg'];//, 'Pics/green.jpg', 'Pics/canals.jpg'];
@@ -42,12 +49,6 @@ function preload(){
 	console.log(front_wall_pictures);
 	console.log(left_wall_pictures);
 	console.log(right_wall_pictures);
-}
-
-function setup() {
-	createCanvas(1700, 900, WEBGL);
-	let offsetY = -50;
-
 	
 
 
