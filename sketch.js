@@ -53,7 +53,7 @@ function setup() {
 
 
 	cam = createCamera();
-	cam.move(0,-100,-300);
+	cam.move(0,-100,1250);
 }
 
 function draw() {
