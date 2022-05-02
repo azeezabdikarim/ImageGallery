@@ -5,8 +5,10 @@ let img;
 let front_wall_pictures = [];
 let left_wall_pictures = [];
 let right_wall_pictures = [];
-let pointLight_pos = 100;
-let z_camera_pos = 0;
+// let pointLight_pos = 100;
+// let z_camera_pos = 0;
+let pointLight_pos = 1350;
+let z_camera_pos = 1250;
 
 let z_camera_max = 1350;
 let z_camera_min = -350;
@@ -53,7 +55,7 @@ function setup() {
 
 
 	cam = createCamera();
-	cam.move(0,-100,1250);
+	cam.move(0,-100,-300);
 }
 
 function draw() {
